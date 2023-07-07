@@ -2,12 +2,12 @@ import { Pupest } from '../index';
 import stdout from '../stdout';
 import FailException from '../exceptions/FailException';
 
-export default async function go(url: string) {
+export default async function find(selector: string, waitTime?: number) {
   // @ts-expect-error
   const { page, options } = this as Pupest;
 
   if (options.verbose) {
-    stdout.info('go', 'COMMAND');
+    stdout.info('find', 'COMMAND');
   }
 
   try {
@@ -15,8 +15,11 @@ export default async function go(url: string) {
       throw new Error('Unable to find the page.');
     }
 
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.waitForSelector(selector, {
+      timeout: waitTime,
+      visible: true,
+    });
   } catch (err: any) {
-    throw new FailException(err?.message, 'go', [url]);
+    throw new FailException(err?.message, 'find', [selector, waitTime]);
   }
 }

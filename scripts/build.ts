@@ -7,4 +7,4 @@ rmSync('dist', {
   force: true,
 });
 
-pmex('tsc --build');
+pmex('tsc --build --force');

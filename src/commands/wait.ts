@@ -1,13 +1,22 @@
 import stdout from '../stdout';
 import { Pupest } from '../index';
+import FailException from '../exceptions/FailException';
 
 export default async function wait(milliseconds: number) {
   // @ts-expect-error
-  const { options } = this as Required<Pupest>;
+  const { page, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('wait', 'COMMAND');
   }
 
-  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  try {
+    if (!page) {
+      throw new Error('Unable to find the page.');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, milliseconds));
+  } catch (err: any) {
+    throw new FailException(err?.message, 'wait', [milliseconds]);
+  }
 }

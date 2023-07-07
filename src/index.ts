@@ -5,12 +5,15 @@ import press from './commands/press';
 import contains from './commands/contains';
 import wait from './commands/wait';
 import stdout from './stdout';
+import click from './commands/click';
+import find from './commands/find';
 
 const [, , ...args] = process.argv;
 
 export interface PupestOptions {
   visible?: boolean;
   verbose?: boolean;
+  speed?: 'slow' | 'medium' | 'fast';
 }
 
 export class Pupest {
@@ -32,6 +35,18 @@ export class Pupest {
     if (args.includes('--verbose')) {
       this.options.verbose = true;
     }
+
+    if (args.includes('--slow')) {
+      this.options.speed = 'slow';
+    }
+
+    if (args.includes('--medium')) {
+      this.options.speed = 'medium';
+    }
+
+    if (args.includes('--fast')) {
+      this.options.speed = 'fast';
+    }
   }
 
   private enqueue(fn: Function, ...params: any[]) {
@@ -43,8 +58,8 @@ export class Pupest {
     return this.enqueue(go, url);
   }
 
-  contains(text: string) {
-    return this.enqueue(contains, text);
+  contains(text: string, selector?: string) {
+    return this.enqueue(contains, text, selector);
   }
 
   press(key: KeyInput) {
@@ -59,12 +74,24 @@ export class Pupest {
     return this.enqueue(wait, milliseconds);
   }
 
+  click(selector: string) {
+    return this.enqueue(click, selector);
+  }
+
+  find(selector: string, waitTime?: number) {
+    return this.enqueue(find, selector, waitTime);
+  }
+
   async test(name: string) {
+    const { visible, speed } = this.options;
+
     this.browser = await puppeteer.launch({
-      headless: this.options.visible ? false : 'new',
+      headless: visible ? false : 'new',
+      slowMo: speed === 'slow' ? 100 : speed === 'medium' ? 50 : undefined,
     });
 
     this.page = await this.browser.newPage();
+    this.page.setDefaultTimeout(10000);
 
     stdout.info(name, 'CONTEXT');
 

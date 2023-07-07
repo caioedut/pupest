@@ -2,17 +2,33 @@ import { Pupest } from '../index';
 import FailException from '../exceptions/FailException';
 import stdout from '../stdout';
 
-export default async function contains(text: string) {
+export default async function contains(text: string, selector?: string) {
   // @ts-expect-error
-  const { page, options } = this as Required<Pupest>;
+  const { page, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('contains', 'COMMAND');
   }
 
-  const test = await page.evaluate((text: string) => document.body.innerText.includes(text), text);
+  try {
+    if (!page) {
+      throw new Error('Unable to find the page.');
+    }
 
-  if (!test) {
-    throw new FailException(`Text not found`, 'contains', [text]);
+    const test = await page.evaluate(
+      (text: string, selector?: string) => {
+        const $el = selector ? document.querySelector(selector) : document.body;
+        // @ts-expect-error
+        return $el ? $el.innerText.includes(text) : false;
+      },
+      text,
+      selector,
+    );
+
+    if (!test) {
+      throw new Error(`Text not found`);
+    }
+  } catch (err: any) {
+    throw new FailException(err?.message, 'contains', [text, selector]);
   }
 }

@@ -17,7 +17,7 @@
   "files": [
     "dist"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": "./dist/cli.js",
   "scripts": {
     "examples": "tsx scripts/examples.ts",
