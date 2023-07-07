@@ -1,5 +1,6 @@
 {
   "name": "pupest",
+  "description": "The easiest test automation using Puppeteer",
   "version": "0.0.12",
   "keywords": [
     "test",
