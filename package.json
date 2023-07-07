@@ -1,7 +1,21 @@
 {
   "name": "pupest",
-  "version": "0.0.01",
+  "version": "0.0.11",
+  "keywords": [
+    "test",
+    "automation",
+    "puppeteer",
+    "e2e"
+  ],
   "license": "MIT",
+  "repository": "https://github.com/caioedut/pupest",
+  "author": {
+    "name": "Caio Teixeira",
+    "email": "caioedut@gmail.com"
+  },
+  "files": [
+    "dist"
+  ],
   "main": "index.js",
   "bin": "./dist/cli.js",
   "scripts": {
