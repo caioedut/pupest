@@ -1,0 +1,22 @@
+{
+  "name": "pupest",
+  "version": "0.0.01",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": "./dist/cli.js",
+  "scripts": {
+    "examples": "tsx scripts/examples.ts",
+    "test": "tsx scripts/test.ts",
+    "build": "tsx scripts/build.ts"
+  },
+  "dependencies": {
+    "glob": "^10.3.1",
+    "puppeteer": "^20.8.0",
+    "tsx": "*"
+  },
+  "devDependencies": {
+    "pmex": "^0.0.34",
+    "prettier": "^3.0.0",
+    "pupest": "file:./dist"
+  }
+}
