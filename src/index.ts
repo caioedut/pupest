@@ -88,6 +88,10 @@ export class Pupest {
     this.browser = await puppeteer.launch({
       headless: visible ? false : 'new',
       slowMo: speed === 'slow' ? 100 : speed === 'medium' ? 50 : undefined,
+      defaultViewport: {
+        height: 1080,
+        width: 1920,
+      },
     });
 
     this.page = await this.browser.newPage();

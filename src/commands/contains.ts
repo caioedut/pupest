@@ -15,6 +15,10 @@ export default async function contains(text: string, selector?: string) {
       throw new Error('Unable to find the page.');
     }
 
+    if (selector) {
+      await page.waitForSelector(selector);
+    }
+
     const test = await page.evaluate(
       (text: string, selector?: string) => {
         const $el = selector ? document.querySelector(selector) : document.body;

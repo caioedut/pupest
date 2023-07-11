@@ -2,7 +2,7 @@ import { Pupest } from '../index';
 import stdout from '../stdout';
 import FailException from '../exceptions/FailException';
 
-export default async function find(selector: string, waitTime?: number) {
+export default async function find(selector: string) {
   // @ts-expect-error
   const { page, options } = this as Pupest;
 
@@ -15,11 +15,8 @@ export default async function find(selector: string, waitTime?: number) {
       throw new Error('Unable to find the page.');
     }
 
-    await page.waitForSelector(selector, {
-      timeout: waitTime,
-      visible: true,
-    });
+    await page.waitForSelector(selector, { visible: true });
   } catch (err: any) {
-    throw new FailException(err?.message, 'find', [selector, waitTime]);
+    throw new FailException(err?.message, 'find', [selector]);
   }
 }

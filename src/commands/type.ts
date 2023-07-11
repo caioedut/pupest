@@ -16,6 +16,7 @@ export default async function type(text: string, selector?: string) {
     }
 
     if (typeof selector === 'string') {
+      await page.waitForSelector(selector);
       await page.type(selector, text);
     } else {
       await page.keyboard.type(text);

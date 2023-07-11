@@ -15,6 +15,7 @@ export default async function click(selector: string) {
       throw new Error('Unable to find the page.');
     }
 
+    await page.waitForSelector(selector);
     await page.click(selector);
   } catch (err: any) {
     throw new FailException(err?.message, 'find', [selector]);
