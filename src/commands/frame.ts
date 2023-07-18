@@ -4,24 +4,27 @@ import FailException from '../exceptions/FailException';
 
 export default async function frame(selector?: string | null) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, page, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('frame', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope || !page) {
       throw new Error('Unable to find the page.');
     }
 
-    // @ts-expect-error
-    this.scope = await page.mainFrame();
+    if (!selector) {
+      // @ts-expect-error
+      this.scope = await page.mainFrame();
+    }
 
     if (selector) {
-      await page.waitForSelector(selector);
+      await scope.waitForSelector(selector);
 
-      const $frame = await page.$(selector);
+      const $frame = await scope.$(selector);
+
       // @ts-expect-error
       this.scope = await $frame?.contentFrame();
     }
