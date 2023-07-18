@@ -1,39 +1,40 @@
 import puppeteer, { Browser, Frame, KeyInput, Page } from 'puppeteer';
-import go from './commands/go';
-import type from './commands/type';
-import press from './commands/press';
-import contains from './commands/contains';
-import select from './commands/select';
-import wait from './commands/wait';
-import scroll from './commands/scroll';
-import stdout from './stdout';
-import click from './commands/click';
-import frame from './commands/frame';
-import find from './commands/find';
-import screenshot from './commands/screenshot';
-import file from './commands/file';
+
 import args from './args';
+import click from './commands/click';
+import contains from './commands/contains';
+import file from './commands/file';
+import find from './commands/find';
+import frame from './commands/frame';
+import go from './commands/go';
+import press from './commands/press';
+import screenshot from './commands/screenshot';
+import scroll from './commands/scroll';
+import select from './commands/select';
+import type from './commands/type';
+import wait from './commands/wait';
+import stdout from './stdout';
 
 export interface PupestOptions {
   bail?: boolean;
   height?: number;
-  width?: number;
+  speed?: 'fast' | 'medium' | 'slow';
   timeout?: number;
-  speed?: 'slow' | 'medium' | 'fast';
-  visible?: boolean;
   verbose?: boolean;
+  visible?: boolean;
+  width?: number;
 }
 
 export class Pupest {
-  private readonly path: string;
+  private browser?: Browser;
 
   private readonly options: Required<PupestOptions>;
 
-  private queue: Function[] = [];
-
-  private browser?: Browser;
-
   private page?: Page;
+
+  private readonly path: string;
+
+  private queue: Function[] = [];
 
   public scope?: Frame;
 
@@ -63,7 +64,7 @@ export class Pupest {
     return this.enqueue(find, selector, waitTime);
   }
 
-  frame(selector?: string | null) {
+  frame(selector?: null | string) {
     return this.enqueue(frame, selector);
   }
 
@@ -87,24 +88,10 @@ export class Pupest {
     return this.enqueue(select, selector, ...values);
   }
 
-  type(text: string, selector?: string) {
-    return this.enqueue(type, text, selector);
-  }
-
-  wait(milliseconds: number) {
-    return this.enqueue(wait, milliseconds);
-  }
-
   async test(name: string) {
     const options = this.options;
 
     this.browser = await puppeteer.launch({
-      headless: options.visible ? false : 'new',
-      slowMo: options.speed === 'slow' ? 100 : options.speed === 'medium' ? 50 : undefined,
-      defaultViewport: {
-        height: options.height,
-        width: options.width,
-      },
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -134,6 +121,12 @@ export class Pupest {
         '--metrics-recording-only',
         '--mute-audio',
       ],
+      defaultViewport: {
+        height: options.height,
+        width: options.width,
+      },
+      headless: options.visible ? false : 'new',
+      slowMo: options.speed === 'slow' ? 100 : options.speed === 'medium' ? 50 : undefined,
     });
 
     this.page = await this.browser.newPage();
@@ -180,28 +173,36 @@ export class Pupest {
 
     return !error;
   }
+
+  type(text: string, selector?: string) {
+    return this.enqueue(type, text, selector);
+  }
+
+  wait(milliseconds: number) {
+    return this.enqueue(wait, milliseconds);
+  }
 }
 
 export const styles = {
-  // Defaults
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  dim: '\x1b[2m',
-  underscore: '\x1b[4m',
-  blink: '\x1b[5m',
-  reverse: '\x1b[7m',
-  hidden: '\x1b[8m',
-
   // Background
   bgBlack: '\x1b[40m',
-  bgRed: '\x1b[41m',
-  bgGreen: '\x1b[42m',
-  bgYellow: '\x1b[43m',
   bgBlue: '\x1b[44m',
-  bgMagenta: '\x1b[45m',
   bgCyan: '\x1b[46m',
-  bgWhite: '\x1b[47m',
   bgGray: '\x1b[100m',
+  bgGreen: '\x1b[42m',
+  bgMagenta: '\x1b[45m',
+  bgRed: '\x1b[41m',
+
+  bgWhite: '\x1b[47m',
+  bgYellow: '\x1b[43m',
+  blink: '\x1b[5m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
+  hidden: '\x1b[8m',
+  // Defaults
+  reset: '\x1b[0m',
+  reverse: '\x1b[7m',
+  underscore: '\x1b[4m',
 };
 
 export default function pupest(options?: PupestOptions) {

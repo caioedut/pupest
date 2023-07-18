@@ -3,6 +3,7 @@
 import { execSync } from 'child_process';
 import { globSync } from 'glob';
 import { normalize } from 'path';
+
 import args from './args';
 
 console.clear();
@@ -23,5 +24,5 @@ if (args.changed) {
 const forwardArgs = process.argv.filter((arg) => arg.startsWith('-')).join(' ');
 
 for (const file of files) {
-  execSync(`tsx ${file} ${forwardArgs}`, { stdio: 'inherit', encoding: 'utf-8' });
+  execSync(`tsx ${file} ${forwardArgs}`, { encoding: 'utf-8', stdio: 'inherit' });
 }

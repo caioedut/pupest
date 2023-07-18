@@ -1,11 +1,12 @@
-import { Pupest } from '../index';
 import { KeyInput } from 'puppeteer';
-import stdout from '../stdout';
+
 import FailException from '../exceptions/FailException';
+import { Pupest } from '../index';
+import stdout from '../stdout';
 
 export default async function press(key: KeyInput) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { options, page } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('press', 'COMMAND');

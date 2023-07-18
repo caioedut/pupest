@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const styles = {
   // Defaults
   reset: '\x1b[0m',
@@ -19,19 +20,20 @@ export const styles = {
   bgWhite: '\x1b[47m',
   bgGray: '\x1b[100m',
 };
+/* eslint-enable */
 
 const stdout = {
+  error(text: string, label: string = 'ERROR') {
+    process.stdout.write(`${styles.bgRed} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
+  },
   info(text: string, label: string = 'INFO') {
     process.stdout.write(`${styles.bgBlue} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
-  },
-  warn(text: string, label: string = 'WARN') {
-    process.stdout.write(`${styles.bgYellow} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
   },
   success(text: string, label: string = 'SUCCESS') {
     process.stdout.write(`${styles.bgGreen} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
   },
-  error(text: string, label: string = 'ERROR') {
-    process.stdout.write(`${styles.bgRed} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
+  warn(text: string, label: string = 'WARN') {
+    process.stdout.write(`${styles.bgYellow} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}\n`);
   },
 };
 

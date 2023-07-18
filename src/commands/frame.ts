@@ -1,10 +1,10 @@
+import FailException from '../exceptions/FailException';
 import { Pupest } from '../index';
 import stdout from '../stdout';
-import FailException from '../exceptions/FailException';
 
-export default async function frame(selector?: string | null) {
+export default async function frame(selector?: null | string) {
   // @ts-expect-error
-  const { scope, page, options } = this as Pupest;
+  const { options, page, scope } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('frame', 'COMMAND');

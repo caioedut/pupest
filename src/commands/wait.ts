@@ -1,10 +1,10 @@
-import stdout from '../stdout';
-import { Pupest } from '../index';
 import FailException from '../exceptions/FailException';
+import { Pupest } from '../index';
+import stdout from '../stdout';
 
 export default async function wait(milliseconds: number) {
   // @ts-expect-error
-  const { scope, options } = this as Pupest;
+  const { options, scope } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('wait', 'COMMAND');

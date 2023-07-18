@@ -3,12 +3,12 @@ import yargs from 'yargs';
 const args = yargs(process.argv)
   .options({
     bail: { type: 'boolean' },
-    height: { type: 'number', alias: 'h', default: 1080 },
-    width: { type: 'number', alias: 'w', default: 1920 },
-    timeout: { type: 'number', default: 15000 },
+    height: { alias: 'h', default: 1080, type: 'number' },
     speed: { type: 'string' },
+    timeout: { default: 15000, type: 'number' },
     verbose: { type: 'boolean' },
     visible: { type: 'boolean' },
+    width: { alias: 'w', default: 1920, type: 'number' },
   })
   .parse();
 

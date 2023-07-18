@@ -3,8 +3,8 @@ import pmex from 'pmex';
 
 // Remove current build
 rmSync('dist', {
-  recursive: true,
   force: true,
+  recursive: true,
 });
 
 pmex('tsc --build --force');

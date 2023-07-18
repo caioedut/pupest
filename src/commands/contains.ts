@@ -1,10 +1,10 @@
-import { Pupest } from '../index';
 import FailException from '../exceptions/FailException';
+import { Pupest } from '../index';
 import stdout from '../stdout';
 
 export default async function contains(text: string, selector?: string) {
   // @ts-expect-error
-  const { scope, options } = this as Pupest;
+  const { options, scope } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('contains', 'COMMAND');
