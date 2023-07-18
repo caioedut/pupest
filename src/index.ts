@@ -31,16 +31,15 @@ const args = yargs(process.argv)
   .parse() as PupestOptions;
 
 export class Pupest {
-  // @ts-expect-error
-  private options: Required<PupestOptions> = {};
+  private readonly file: string;
+
+  private readonly options: Required<PupestOptions>;
 
   private queue: Function[] = [];
 
   private browser?: Browser;
 
   private page?: Page;
-
-  public file: string;
 
   constructor(options?: PupestOptions) {
     this.file = process.argv?.[1];
