@@ -13,6 +13,7 @@ import yargs from 'yargs';
 import screenshot from './commands/screenshot';
 
 export interface PupestOptions {
+  bail?: boolean;
   height?: number;
   width?: number;
   speed?: 'slow' | 'medium' | 'fast';
@@ -22,6 +23,7 @@ export interface PupestOptions {
 
 const args = yargs(process.argv)
   .options({
+    bail: { type: 'boolean' },
     height: { type: 'number', alias: 'h', default: 1080 },
     width: { type: 'number', alias: 'w', default: 1920 },
     speed: { type: 'string' },
@@ -164,6 +166,10 @@ export class Pupest {
 
     if (this.browser) {
       this.browser.close().catch(() => null);
+    }
+
+    if (error && options.bail) {
+      throw new Error('Test failed.');
     }
 
     return !error;
