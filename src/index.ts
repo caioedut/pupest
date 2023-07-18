@@ -1,5 +1,4 @@
 import puppeteer, { Browser, Frame, KeyInput, Page } from 'puppeteer';
-import yargs from 'yargs';
 import go from './commands/go';
 import type from './commands/type';
 import press from './commands/press';
@@ -13,6 +12,7 @@ import frame from './commands/frame';
 import find from './commands/find';
 import screenshot from './commands/screenshot';
 import file from './commands/file';
+import args from './args';
 
 export interface PupestOptions {
   bail?: boolean;
@@ -23,18 +23,6 @@ export interface PupestOptions {
   visible?: boolean;
   verbose?: boolean;
 }
-
-const args = yargs(process.argv)
-  .options({
-    bail: { type: 'boolean' },
-    height: { type: 'number', alias: 'h', default: 1080 },
-    width: { type: 'number', alias: 'w', default: 1920 },
-    timeout: { type: 'number', default: 10000 },
-    speed: { type: 'string' },
-    verbose: { type: 'boolean' },
-    visible: { type: 'boolean' },
-  })
-  .parse() as PupestOptions;
 
 export class Pupest {
   private readonly path: string;
@@ -47,14 +35,10 @@ export class Pupest {
 
   private page?: Page;
 
-  public parent?: Pupest;
-
   public scope?: Frame;
 
   constructor(options?: PupestOptions) {
     this.path = process.argv?.[1];
-
-    // @ts-expect-error
     this.options = { ...options, ...args };
   }
 
@@ -187,7 +171,7 @@ export class Pupest {
     process.stdout.write(`\n`);
 
     if (this.browser) {
-      this.browser.close().catch(() => null);
+      await this.browser.close().catch(() => null);
     }
 
     if (error && options.bail) {

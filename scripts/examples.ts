@@ -14,4 +14,4 @@ pmex({
   yarn: `install --check-files`,
 });
 
-pmex(`tsx src/cli.ts --visible --verbose --timeout 20000`);
+pmex(`tsx src/cli.ts --visible --verbose`);
