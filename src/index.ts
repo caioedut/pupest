@@ -134,6 +134,12 @@ export class Pupest {
     this.page = await this.browser.newPage();
     this.page.setDefaultTimeout(10000);
 
+    if (options.visible) {
+      this.browser.pages().then(([initialPage]) => {
+        initialPage.evaluate((name) => (document.title = name), name);
+      });
+    }
+
     stdout.info(name, 'CONTEXT');
 
     let successCount = 0;
