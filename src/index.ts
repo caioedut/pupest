@@ -1,4 +1,5 @@
 import puppeteer, { Browser, Frame, KeyInput, Page } from 'puppeteer';
+import UserAgent from 'user-agents';
 
 import args from './args';
 import click from './commands/click';
@@ -20,6 +21,7 @@ export interface PupestOptions {
   height?: number;
   speed?: 'fast' | 'medium' | 'slow';
   timeout?: number;
+  userAgent?: string;
   verbose?: boolean;
   visible?: boolean;
   width?: number;
@@ -93,33 +95,52 @@ export class Pupest {
 
     this.browser = await puppeteer.launch({
       args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-infobars',
-        '--single-process',
-        '--no-zygote',
-        '--no-first-run',
-        `--window-size=${options.width},${options.height}`,
-        '--window-position=0,0',
-        '--ignore-certificate-errors',
-        '--ignore-certificate-errors-skip-list',
-        '--disable-dev-shm-usage',
+        '--autoplay-policy=user-gesture-required',
         '--disable-accelerated-2d-canvas',
-        '--disable-gpu',
-        '--disable-notifications',
+        '--disable-background-networking',
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',
         '--disable-breakpad',
+        '--disable-client-side-phishing-detection',
         '--disable-component-extensions-with-background-pages',
+        '--disable-component-update',
+        '--disable-default-apps',
+        '--disable-dev-shm-usage',
+        '--disable-domain-reliability',
         '--disable-extensions',
-        '--disable-features=TranslateUI,BlinkGenPropertyTrees',
+        '--disable-features=AudioServiceOutOfProcess,BlinkGenPropertyTrees,TranslateUI',
+        '--disable-gpu',
+        '--disable-hang-monitor',
+        '--disable-infobars',
         '--disable-ipc-flooding-protection',
+        '--disable-notifications',
+        '--disable-offer-store-unmasked-wallet-cards',
+        '--disable-popup-blocking',
+        '--disable-print-preview',
+        '--disable-prompt-on-repost',
         '--disable-renderer-backgrounding',
+        '--disable-setuid-sandbox',
         '--disable-smooth-scrolling',
-        '--enable-features=NetworkService,NetworkServiceInProcess',
-        '--force-color-profile=srgb',
+        '--disable-speech-api',
+        '--disable-sync',
+        // '--enable-features=NetworkService,NetworkServiceInProcess',
+        '--hide-scrollbars',
+        '--ignore-certificate-errors',
+        '--ignore-certificate-errors-skip-list',
+        '--ignore-gpu-blacklist',
         '--metrics-recording-only',
         '--mute-audio',
+        '--no-default-browser-check',
+        '--no-first-run',
+        '--no-pings',
+        '--no-sandbox',
+        '--no-zygote',
+        '--password-store=basic',
+        '--single-process',
+        '--use-gl=swiftshader',
+        '--use-mock-keychain',
+        '--window-position=0,0',
+        `--window-size=${options.width},${options.height}`,
       ],
       defaultViewport: {
         height: options.height,
@@ -130,7 +151,9 @@ export class Pupest {
     });
 
     this.page = await this.browser.newPage();
-    this.page.setDefaultTimeout(options.timeout);
+
+    await this.page.setDefaultTimeout(options.timeout);
+    await this.page.setUserAgent(options?.userAgent || new UserAgent().toString());
 
     this.scope = await this.page.mainFrame();
 

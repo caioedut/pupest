@@ -6,4 +6,4 @@ pmex({
   yarn: `install --check-files`,
 });
 
-pmex(`tsx src/cli.ts --visible --verbose`);
+pmex(`tsx src/cli.ts ${process.argv.slice(2).join(' ')}`);
