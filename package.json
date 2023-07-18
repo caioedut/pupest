@@ -22,7 +22,8 @@
   "scripts": {
     "examples": "tsx scripts/examples.ts",
     "test": "tsx scripts/test.ts",
-    "build": "tsx scripts/build.ts"
+    "build": "tsx scripts/build.ts",
+    "publish:stable": "tsx scripts/publish.ts"
   },
   "dependencies": {
     "glob": "^10.3.1",
