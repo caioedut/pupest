@@ -10,6 +10,7 @@ import click from './commands/click';
 import find from './commands/find';
 
 import yargs from 'yargs';
+import screenshot from './commands/screenshot';
 
 export interface PupestOptions {
   height?: number;
@@ -39,7 +40,11 @@ export class Pupest {
 
   private page?: Page;
 
+  public file: string;
+
   constructor(options?: PupestOptions) {
+    this.file = process.argv?.[1];
+
     // @ts-expect-error
     this.options = { ...options, ...args };
   }
@@ -67,6 +72,10 @@ export class Pupest {
 
   press(key: KeyInput) {
     return this.enqueue(press, key);
+  }
+
+  screenshot(path?: string) {
+    return this.enqueue(screenshot, path);
   }
 
   scroll(selector: string) {
