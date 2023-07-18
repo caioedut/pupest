@@ -4,20 +4,20 @@ import FailException from '../exceptions/FailException';
 
 export default async function file(selector: string, ...paths: string[]) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('file', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope) {
       throw new Error('Unable to find the page.');
     }
 
-    await page.waitForSelector(selector);
+    await scope.waitForSelector(selector);
 
-    const $el = await page.$(selector);
+    const $el = await scope.$(selector);
 
     // @ts-expect-error
     await $el?.uploadFile(...paths);

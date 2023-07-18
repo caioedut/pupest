@@ -4,20 +4,20 @@ import FailException from '../exceptions/FailException';
 
 export default async function type(text: string, selector?: string) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, page, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('type', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope || !page) {
       throw new Error('Unable to find the page.');
     }
 
     if (typeof selector === 'string') {
-      await page.waitForSelector(selector);
-      await page.type(selector, text);
+      await scope.waitForSelector(selector);
+      await scope.type(selector, text);
     } else {
       await page.keyboard.type(text);
     }

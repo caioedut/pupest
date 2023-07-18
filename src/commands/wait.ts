@@ -4,14 +4,14 @@ import FailException from '../exceptions/FailException';
 
 export default async function wait(milliseconds: number) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('wait', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope) {
       throw new Error('Unable to find the page.');
     }
 

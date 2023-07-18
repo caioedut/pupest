@@ -4,22 +4,22 @@ import stdout from '../stdout';
 
 export default async function contains(text: string, selector?: string) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('contains', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope) {
       throw new Error('Unable to find the page.');
     }
 
     if (selector) {
-      await page.waitForSelector(selector);
+      await scope.waitForSelector(selector);
     }
 
-    const test = await page.evaluate(
+    const test = await scope.evaluate(
       (text: string, selector?: string) => {
         const $el = selector ? document.querySelector(selector) : document.body;
         // @ts-expect-error

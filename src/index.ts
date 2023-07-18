@@ -1,4 +1,4 @@
-import puppeteer, { Browser, KeyInput, Page } from 'puppeteer';
+import puppeteer, { Browser, Frame, KeyInput, Page } from 'puppeteer';
 import yargs from 'yargs';
 import go from './commands/go';
 import type from './commands/type';
@@ -9,6 +9,7 @@ import wait from './commands/wait';
 import scroll from './commands/scroll';
 import stdout from './stdout';
 import click from './commands/click';
+import frame from './commands/frame';
 import find from './commands/find';
 import screenshot from './commands/screenshot';
 import file from './commands/file';
@@ -46,6 +47,10 @@ export class Pupest {
 
   private page?: Page;
 
+  public parent?: Pupest;
+
+  public scope?: Frame;
+
   constructor(options?: PupestOptions) {
     this.path = process.argv?.[1];
 
@@ -72,6 +77,10 @@ export class Pupest {
 
   find(selector: string, waitTime?: number) {
     return this.enqueue(find, selector, waitTime);
+  }
+
+  frame(selector?: string | null) {
+    return this.enqueue(frame, selector);
   }
 
   go(url: string) {
@@ -145,6 +154,8 @@ export class Pupest {
 
     this.page = await this.browser.newPage();
     this.page.setDefaultTimeout(options.timeout);
+
+    this.scope = await this.page.mainFrame();
 
     if (options.visible) {
       this.browser.pages().then(([initialPage]) => {

@@ -1,6 +1,6 @@
 import pupest from 'pupest';
 
 pupest() //
-  .go('https://github.com/')
-  .contains('git')
-  .test('GitHub website must contain the word "git"');
+  .go('https://www.npmjs.com/package/pupest')
+  .contains('pupest')
+  .test('NPM website must contain the word "pupest"');

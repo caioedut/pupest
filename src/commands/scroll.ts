@@ -4,20 +4,20 @@ import FailException from '../exceptions/FailException';
 
 export default async function scroll(selector: string) {
   // @ts-expect-error
-  const { page, options } = this as Pupest;
+  const { scope, options } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('scroll', 'COMMAND');
   }
 
   try {
-    if (!page) {
+    if (!scope) {
       throw new Error('Unable to find the page.');
     }
 
-    await page.waitForSelector(selector);
+    await scope.waitForSelector(selector);
 
-    await page.evaluate((selector) => {
+    await scope.evaluate((selector) => {
       const $el = document.querySelector(selector);
       $el && $el.scrollIntoView(true);
     }, selector);
