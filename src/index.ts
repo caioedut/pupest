@@ -4,6 +4,7 @@ import type from './commands/type';
 import press from './commands/press';
 import contains from './commands/contains';
 import wait from './commands/wait';
+import scroll from './commands/scroll';
 import stdout from './stdout';
 import click from './commands/click';
 import find from './commands/find';
@@ -54,16 +55,28 @@ export class Pupest {
     return this;
   }
 
-  go(url: string) {
-    return this.enqueue(go, url);
+  click(selector: string) {
+    return this.enqueue(click, selector);
   }
 
   contains(text: string, selector?: string) {
     return this.enqueue(contains, text, selector);
   }
 
+  find(selector: string, waitTime?: number) {
+    return this.enqueue(find, selector, waitTime);
+  }
+
+  go(url: string) {
+    return this.enqueue(go, url);
+  }
+
   press(key: KeyInput) {
     return this.enqueue(press, key);
+  }
+
+  scroll(selector: string) {
+    return this.enqueue(scroll, selector);
   }
 
   type(text: string, selector?: string) {
@@ -72,14 +85,6 @@ export class Pupest {
 
   wait(milliseconds: number) {
     return this.enqueue(wait, milliseconds);
-  }
-
-  click(selector: string) {
-    return this.enqueue(click, selector);
-  }
-
-  find(selector: string, waitTime?: number) {
-    return this.enqueue(find, selector, waitTime);
   }
 
   async test(name: string) {

@@ -36,3 +36,16 @@ pupest()
 pupest --visible --verbose
 ```
 
+## Commands
+
+| Command    | Params               | Description                                               |
+|------------|----------------------|-----------------------------------------------------------|
+| `click`    | `selector`           |                                                           |
+| `contains` | `text`, [`selector`] | Search for a text in document or in an especific selector |
+| `find`     | `selector`           | Search for element that matches with selector             |
+| `go`       | `url`                |                                                           |
+| `press`    | `key`                |                                                           |
+| `type`     | `text`               |                                                           |
+| `wait`     | `milliseconds`       |                                                           |
+
+
