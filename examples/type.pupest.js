@@ -1,4 +1,4 @@
-import pupest from 'pupest';
+import pupest from '../src';
 
 pupest() //
   .go('https://github.com/login')

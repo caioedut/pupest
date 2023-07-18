@@ -34,7 +34,6 @@
   "devDependencies": {
     "@types/yargs": "^17.0.24",
     "pmex": "^0.0.34",
-    "prettier": "^3.0.0",
-    "pupest": "file:./dist"
+    "prettier": "^3.0.0"
   }
 }
