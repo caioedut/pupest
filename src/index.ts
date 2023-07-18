@@ -11,11 +11,13 @@ import find from './commands/find';
 
 import yargs from 'yargs';
 import screenshot from './commands/screenshot';
+import file from './commands/file';
 
 export interface PupestOptions {
   bail?: boolean;
   height?: number;
   width?: number;
+  timeout?: number;
   speed?: 'slow' | 'medium' | 'fast';
   visible?: boolean;
   verbose?: boolean;
@@ -26,6 +28,7 @@ const args = yargs(process.argv)
     bail: { type: 'boolean' },
     height: { type: 'number', alias: 'h', default: 1080 },
     width: { type: 'number', alias: 'w', default: 1920 },
+    timeout: { type: 'number', default: 10000 },
     speed: { type: 'string' },
     verbose: { type: 'boolean' },
     visible: { type: 'boolean' },
@@ -33,7 +36,7 @@ const args = yargs(process.argv)
   .parse() as PupestOptions;
 
 export class Pupest {
-  private readonly file: string;
+  private readonly path: string;
 
   private readonly options: Required<PupestOptions>;
 
@@ -44,7 +47,7 @@ export class Pupest {
   private page?: Page;
 
   constructor(options?: PupestOptions) {
-    this.file = process.argv?.[1];
+    this.path = process.argv?.[1];
 
     // @ts-expect-error
     this.options = { ...options, ...args };
@@ -61,6 +64,10 @@ export class Pupest {
 
   contains(text: string, selector?: string) {
     return this.enqueue(contains, text, selector);
+  }
+
+  file(selector: string, ...paths: string[]) {
+    return this.enqueue(file, selector, ...paths);
   }
 
   find(selector: string, waitTime?: number) {
@@ -133,7 +140,7 @@ export class Pupest {
     });
 
     this.page = await this.browser.newPage();
-    this.page.setDefaultTimeout(10000);
+    this.page.setDefaultTimeout(options.timeout);
 
     if (options.visible) {
       this.browser.pages().then(([initialPage]) => {

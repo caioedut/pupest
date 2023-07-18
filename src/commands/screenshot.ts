@@ -5,7 +5,7 @@ import { basename, dirname, join } from 'path';
 
 export default async function screenshot(path?: string) {
   // @ts-expect-error
-  const { page, options, file } = this as Pupest;
+  const { page, options, path: testFile } = this as Pupest;
 
   if (options.verbose) {
     stdout.info('screenshot', 'COMMAND');
@@ -17,7 +17,7 @@ export default async function screenshot(path?: string) {
     }
 
     await page.screenshot({
-      path: path ?? join(dirname(file), `${basename(file, '.js')}_${Date.now()}.png`),
+      path: path ?? join(dirname(testFile), `${basename(testFile, '.js')}_${Date.now()}.png`),
       type: 'png',
       fullPage: true,
     });
