@@ -1,15 +1,15 @@
 import puppeteer, { Browser, KeyInput, Page } from 'puppeteer';
+import yargs from 'yargs';
 import go from './commands/go';
 import type from './commands/type';
 import press from './commands/press';
 import contains from './commands/contains';
+import select from './commands/select';
 import wait from './commands/wait';
 import scroll from './commands/scroll';
 import stdout from './stdout';
 import click from './commands/click';
 import find from './commands/find';
-
-import yargs from 'yargs';
 import screenshot from './commands/screenshot';
 import file from './commands/file';
 
@@ -88,6 +88,10 @@ export class Pupest {
 
   scroll(selector: string) {
     return this.enqueue(scroll, selector);
+  }
+
+  select(selector: string, ...values: string[]) {
+    return this.enqueue(select, selector, ...values);
   }
 
   type(text: string, selector?: string) {
