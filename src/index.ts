@@ -9,16 +9,29 @@ import stdout from './stdout';
 import click from './commands/click';
 import find from './commands/find';
 
-const [, , ...args] = process.argv;
+import yargs from 'yargs';
 
 export interface PupestOptions {
+  height?: number;
+  width?: number;
+  speed?: 'slow' | 'medium' | 'fast';
   visible?: boolean;
   verbose?: boolean;
-  speed?: 'slow' | 'medium' | 'fast';
 }
 
+const args = yargs(process.argv)
+  .options({
+    height: { type: 'number', alias: 'h', default: 1080 },
+    width: { type: 'number', alias: 'w', default: 1920 },
+    speed: { type: 'string' },
+    verbose: { type: 'boolean' },
+    visible: { type: 'boolean' },
+  })
+  .parse() as PupestOptions;
+
 export class Pupest {
-  private options: PupestOptions = {};
+  // @ts-expect-error
+  private options: Required<PupestOptions> = {};
 
   private queue: Function[] = [];
 
@@ -27,27 +40,8 @@ export class Pupest {
   private page?: Page;
 
   constructor(options?: PupestOptions) {
-    this.options = options || {};
-
-    if (args.includes('--visible')) {
-      this.options.visible = true;
-    }
-
-    if (args.includes('--verbose')) {
-      this.options.verbose = true;
-    }
-
-    if (args.includes('--slow')) {
-      this.options.speed = 'slow';
-    }
-
-    if (args.includes('--medium')) {
-      this.options.speed = 'medium';
-    }
-
-    if (args.includes('--fast')) {
-      this.options.speed = 'fast';
-    }
+    // @ts-expect-error
+    this.options = { ...options, ...args };
   }
 
   private enqueue(fn: Function, ...params: any[]) {
@@ -88,15 +82,44 @@ export class Pupest {
   }
 
   async test(name: string) {
-    const { visible, speed } = this.options;
+    const options = this.options;
 
     this.browser = await puppeteer.launch({
-      headless: visible ? false : 'new',
-      slowMo: speed === 'slow' ? 100 : speed === 'medium' ? 50 : undefined,
+      headless: options.visible ? false : 'new',
+      slowMo: options.speed === 'slow' ? 100 : options.speed === 'medium' ? 50 : undefined,
       defaultViewport: {
-        height: 1080,
-        width: 1920,
+        height: options.height,
+        width: options.width,
       },
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-infobars',
+        '--single-process',
+        '--no-zygote',
+        '--no-first-run',
+        `--window-size=${options.width},${options.height}`,
+        '--window-position=0,0',
+        '--ignore-certificate-errors',
+        '--ignore-certificate-errors-skip-list',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu',
+        '--disable-notifications',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-breakpad',
+        '--disable-component-extensions-with-background-pages',
+        '--disable-extensions',
+        '--disable-features=TranslateUI,BlinkGenPropertyTrees',
+        '--disable-ipc-flooding-protection',
+        '--disable-renderer-backgrounding',
+        '--disable-smooth-scrolling',
+        '--enable-features=NetworkService,NetworkServiceInProcess',
+        '--force-color-profile=srgb',
+        '--metrics-recording-only',
+        '--mute-audio',
+      ],
     });
 
     this.page = await this.browser.newPage();
