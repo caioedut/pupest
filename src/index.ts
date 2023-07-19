@@ -211,27 +211,29 @@ export class Pupest {
   }
 }
 
+/* eslint-disable */
 export const styles = {
-  // Background
-  bgBlack: '\x1b[40m',
-  bgBlue: '\x1b[44m',
-  bgCyan: '\x1b[46m',
-  bgGray: '\x1b[100m',
-  bgGreen: '\x1b[42m',
-  bgMagenta: '\x1b[45m',
-  bgRed: '\x1b[41m',
-
-  bgWhite: '\x1b[47m',
-  bgYellow: '\x1b[43m',
-  blink: '\x1b[5m',
-  bright: '\x1b[1m',
-  dim: '\x1b[2m',
-  hidden: '\x1b[8m',
   // Defaults
   reset: '\x1b[0m',
-  reverse: '\x1b[7m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
   underscore: '\x1b[4m',
+  blink: '\x1b[5m',
+  reverse: '\x1b[7m',
+  hidden: '\x1b[8m',
+
+  // Background
+  bgBlack: '\x1b[40m',
+  bgRed: '\x1b[41m',
+  bgGreen: '\x1b[42m',
+  bgYellow: '\x1b[43m',
+  bgBlue: '\x1b[44m',
+  bgMagenta: '\x1b[45m',
+  bgCyan: '\x1b[46m',
+  bgWhite: '\x1b[47m',
+  bgGray: '\x1b[100m',
 };
+/* eslint-enable */
 
 export default function pupest(options?: PupestOptions) {
   return new Pupest(options);
