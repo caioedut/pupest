@@ -1,4 +1,4 @@
-import puppeteer, { Browser, Frame, KeyInput, Page } from 'puppeteer';
+import Puppeteer, { Browser, Frame, Page } from 'puppeteer';
 import UserAgent from 'user-agents';
 
 import args from './args';
@@ -9,6 +9,7 @@ import find from './commands/find';
 import frame from './commands/frame';
 import go from './commands/go';
 import press from './commands/press';
+import puppeteer from './commands/puppeteer';
 import screenshot from './commands/screenshot';
 import scroll from './commands/scroll';
 import select from './commands/select';
@@ -50,50 +51,54 @@ export class Pupest {
     return this;
   }
 
-  click(selector: string) {
-    return this.enqueue(click, selector);
+  click(...args: Parameters<typeof click>) {
+    return this.enqueue(click, ...args);
   }
 
-  contains(text: string, selector?: string) {
-    return this.enqueue(contains, text, selector);
+  contains(...args: Parameters<typeof contains>) {
+    return this.enqueue(contains, ...args);
   }
 
-  file(selector: string, ...paths: string[]) {
-    return this.enqueue(file, selector, ...paths);
+  file(...args: Parameters<typeof file>) {
+    return this.enqueue(file, ...args);
   }
 
-  find(selector: string, waitTime?: number) {
-    return this.enqueue(find, selector, waitTime);
+  find(...args: Parameters<typeof find>) {
+    return this.enqueue(find, ...args);
   }
 
-  frame(selector?: null | string) {
-    return this.enqueue(frame, selector);
+  frame(...args: Parameters<typeof frame>) {
+    return this.enqueue(frame, ...args);
   }
 
-  go(url: string) {
-    return this.enqueue(go, url);
+  go(...args: Parameters<typeof go>) {
+    return this.enqueue(go, ...args);
   }
 
-  press(key: KeyInput) {
-    return this.enqueue(press, key);
+  press(...args: Parameters<typeof press>) {
+    return this.enqueue(press, ...args);
   }
 
-  screenshot(path?: string) {
-    return this.enqueue(screenshot, path);
+  puppeteer(...args: Parameters<typeof puppeteer>) {
+    return this.enqueue(puppeteer, ...args);
   }
 
-  scroll(selector: string) {
-    return this.enqueue(scroll, selector);
+  screenshot(...args: Parameters<typeof screenshot>) {
+    return this.enqueue(screenshot, ...args);
   }
 
-  select(selector: string, ...values: string[]) {
-    return this.enqueue(select, selector, ...values);
+  scroll(...args: Parameters<typeof scroll>) {
+    return this.enqueue(scroll, ...args);
+  }
+
+  select(...args: Parameters<typeof select>) {
+    return this.enqueue(select, ...args);
   }
 
   async test(name: string) {
     const options = this.options;
 
-    this.browser = await puppeteer.launch({
+    this.browser = await Puppeteer.launch({
       args: [
         '--autoplay-policy=user-gesture-required',
         '--disable-accelerated-2d-canvas',
