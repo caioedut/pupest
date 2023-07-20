@@ -64,6 +64,14 @@ If set to `true`, stops the test run on the first failure.
 
 ---
 
+### `changed`
+
+**CLI:** `--changed`
+
+Runs tests only on the files that have been changed. It is useful for quickly testing changes without having to run the entire test suite.
+
+---
+
 ### `height`
 
 **CLI:** `--height` or `-h`

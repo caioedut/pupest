@@ -3,6 +3,7 @@ import UserAgent from 'user-agents';
 
 import args from './args';
 import click from './commands/click';
+import clickIfExists from './commands/clickIfExists';
 import contains from './commands/contains';
 import file from './commands/file';
 import find from './commands/find';
@@ -15,6 +16,7 @@ import scroll from './commands/scroll';
 import select from './commands/select';
 import type from './commands/type';
 import wait from './commands/wait';
+import waitResponseURL from './commands/waitResponseURL';
 import stdout from './stdout';
 
 export interface PupestOptions {
@@ -53,6 +55,16 @@ export class Pupest {
 
   click(...args: Parameters<typeof click>) {
     return this.enqueue(click, ...args);
+  }
+
+  clickIfExists(...args: Parameters<typeof clickIfExists>) {
+    return this.enqueue(clickIfExists, ...args);
+  }
+
+  command(handler: (pupest: Pupest, ...args: any[]) => Pupest, ...args: Parameters<typeof handler>) {
+    // Add new command must be sync
+    handler.bind(this)(this, ...args);
+    return this;
   }
 
   contains(...args: Parameters<typeof contains>) {
@@ -128,6 +140,7 @@ export class Pupest {
         '--disable-smooth-scrolling',
         '--disable-speech-api',
         '--disable-sync',
+        '--disable-translate',
         // '--enable-features=NetworkService,NetworkServiceInProcess',
         '--hide-scrollbars',
         '--ignore-certificate-errors',
@@ -142,10 +155,9 @@ export class Pupest {
         '--no-zygote',
         '--password-store=basic',
         '--single-process',
+        '--start-maximized',
         '--use-gl=swiftshader',
         '--use-mock-keychain',
-        '--window-position=0,0',
-        `--window-size=${options.width},${options.height}`,
       ],
       defaultViewport: {
         height: options.height,
@@ -202,38 +214,18 @@ export class Pupest {
     return !error;
   }
 
-  type(text: string, selector?: string) {
-    return this.enqueue(type, text, selector);
+  type(...args: Parameters<typeof type>) {
+    return this.enqueue(type, ...args);
   }
 
-  wait(milliseconds: number) {
-    return this.enqueue(wait, milliseconds);
+  wait(...args: Parameters<typeof wait>) {
+    return this.enqueue(wait, ...args);
+  }
+
+  waitResponseURL(...args: Parameters<typeof waitResponseURL>) {
+    return this.enqueue(waitResponseURL, ...args);
   }
 }
-
-/* eslint-disable */
-export const styles = {
-  // Defaults
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  dim: '\x1b[2m',
-  underscore: '\x1b[4m',
-  blink: '\x1b[5m',
-  reverse: '\x1b[7m',
-  hidden: '\x1b[8m',
-
-  // Background
-  bgBlack: '\x1b[40m',
-  bgRed: '\x1b[41m',
-  bgGreen: '\x1b[42m',
-  bgYellow: '\x1b[43m',
-  bgBlue: '\x1b[44m',
-  bgMagenta: '\x1b[45m',
-  bgCyan: '\x1b[46m',
-  bgWhite: '\x1b[47m',
-  bgGray: '\x1b[100m',
-};
-/* eslint-enable */
 
 export default function pupest(options?: PupestOptions) {
   return new Pupest(options);

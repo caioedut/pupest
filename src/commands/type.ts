@@ -17,6 +17,21 @@ export default async function type(text: string, selector?: string) {
 
     if (typeof selector === 'string') {
       await scope.waitForSelector(selector);
+
+      await page.focus(selector);
+
+      // Clear with CTRL
+      await page.keyboard.down('Control');
+      await page.keyboard.press('A');
+      await page.keyboard.up('Control');
+      await page.keyboard.press('Backspace');
+
+      // Clear with CMD
+      await page.keyboard.down('Meta');
+      await page.keyboard.press('A');
+      await page.keyboard.up('Meta');
+      await page.keyboard.press('Backspace');
+
       await scope.type(selector, text);
     } else {
       await page.keyboard.type(text);
