@@ -8,7 +8,8 @@ import args from './args';
 
 console.clear();
 
-let pattern = args?._?.[2] ?? '**/*';
+const argPattern = args?._?.[2];
+let pattern = argPattern ?? '**/*';
 
 if (!pattern.endsWith('.pupest.js')) {
   pattern += '.pupest.js';
@@ -21,7 +22,10 @@ if (args.changed) {
   files = files.filter((item) => changedFiles.some((changed) => normalize(changed) === normalize(item)));
 }
 
-const forwardArgs = process.argv.filter((arg) => arg.startsWith('-')).join(' ');
+const forwardArgs = process.argv
+  .slice(2)
+  .filter((arg) => arg !== argPattern)
+  .join(' ');
 
 for (const file of files) {
   execSync(`tsx ${file} ${forwardArgs}`, { encoding: 'utf-8', stdio: 'inherit' });
