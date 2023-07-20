@@ -110,6 +110,8 @@ export class Pupest {
   async test(name: string) {
     const options = this.options;
 
+    const perfStart = performance.now();
+
     this.browser = await Puppeteer.launch({
       args: [
         '--autoplay-policy=user-gesture-required',
@@ -180,7 +182,11 @@ export class Pupest {
       });
     }
 
-    stdout.info(name, 'CONTEXT');
+    if (options.verbose) {
+      stdout.info(name, 'CONTEXT');
+    } else {
+      stdout.warn(stdout.fillText(name), 'RUNNING', '');
+    }
 
     let successCount = 0;
     let error: any = null;
@@ -194,14 +200,32 @@ export class Pupest {
       error = err;
     }
 
+    const perfEnd = performance.now();
+    const perfSeconds = ((perfEnd - perfStart) / 1000).toFixed(2);
+
     if (error) {
-      stdout.error(`at command ${successCount + 1}: ${error.command ?? 'unknown'}`, 'FAILED');
+      if (options.verbose) {
+        stdout.error(`at command ${successCount + 1}: ${error.command ?? 'unknown'}`, 'FAILED');
+      } else {
+        process.stdout.cursorTo(0);
+        process.stdout.clearLine(0);
+        stdout.error(stdout.fillText(name), 'FAILED');
+      }
+
       stdout.error(error.message, 'MESSAGE');
     } else {
-      stdout.success(`${successCount} command(s)`, 'SUCCESS');
+      if (options.verbose) {
+        stdout.success(`${successCount} command(s) in ${perfSeconds}s`, 'SUCCESS');
+      } else {
+        process.stdout.cursorTo(0);
+        process.stdout.clearLine(0);
+        stdout.success(stdout.fillText(name), 'SUCCESS');
+      }
     }
 
-    process.stdout.write(`\n`);
+    if (options.verbose) {
+      process.stdout.write(`\n`);
+    }
 
     if (this.browser) {
       await this.browser.close().catch(() => null);
