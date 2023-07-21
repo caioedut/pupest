@@ -23,7 +23,8 @@
     "examples": "tsx scripts/examples.ts",
     "test": "tsx scripts/test.ts",
     "build": "tsx scripts/build.ts",
-    "publish:stable": "tsx scripts/publish.ts"
+    "publish:stable": "tsx scripts/publish.ts",
+    "pupest": "tsx src/cli.ts"
   },
   "dependencies": {
     "glob": "^10.3.0",

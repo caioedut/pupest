@@ -24,21 +24,21 @@ export const styles = {
 
 const stdout = {
   info(text: string, label: string = 'INFO', eol: string = `\n`) {
-    process.stdout.write(`${styles.bgBlue} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}${eol}`);
+    process.stdout.write(`${styles.bgBlue} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
   warn(text: string, label: string = 'WARN', eol: string = `\n`) {
-    process.stdout.write(`${styles.bgYellow} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}${eol}`);
+    process.stdout.write(`${styles.bgYellow} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
   success(text: string, label: string = 'SUCCESS', eol: string = `\n`) {
-    process.stdout.write(`${styles.bgGreen} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}${eol}`);
+    process.stdout.write(`${styles.bgGreen} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
   error(text: string, label: string = 'ERROR', eol: string = `\n`) {
-    process.stdout.write(`${styles.bgRed} ${label.padEnd(7, ' ')} ${styles.bgGray} ${text} ${styles.reset}${eol}`);
+    process.stdout.write(`${styles.bgRed} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
 
-  fillText(text: string) {
-    const size = process.stdout.columns - 12;
-    return text.length > size ? text.substring(0, size - 3).trim() + '...' : text.padEnd(size, ' ');
+  clipText(text: string) {
+    const size = process.stdout.columns - 10;
+    return text.length > size ? text.substring(0, size - 3).trim() + '...' : text;
   },
 };
 

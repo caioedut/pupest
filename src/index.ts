@@ -185,7 +185,7 @@ export class Pupest {
     if (options.verbose) {
       stdout.info(name, 'CONTEXT');
     } else {
-      stdout.warn(stdout.fillText(name), 'RUNNING', '');
+      stdout.warn(stdout.clipText(name), 'RUNNING', '');
     }
 
     let successCount = 0;
@@ -209,7 +209,7 @@ export class Pupest {
       } else {
         process.stdout.cursorTo(0);
         process.stdout.clearLine(0);
-        stdout.error(stdout.fillText(name), 'FAILED');
+        stdout.error(stdout.clipText(name), 'FAILED');
       }
 
       stdout.error(error.message, 'MESSAGE');
@@ -219,7 +219,7 @@ export class Pupest {
       } else {
         process.stdout.cursorTo(0);
         process.stdout.clearLine(0);
-        stdout.success(stdout.fillText(name), 'SUCCESS');
+        stdout.success(stdout.clipText(name), 'SUCCESS');
       }
     }
 
