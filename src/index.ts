@@ -9,6 +9,7 @@ import file from './commands/file';
 import find from './commands/find';
 import frame from './commands/frame';
 import go from './commands/go';
+import keep from './commands/keep';
 import press from './commands/press';
 import puppeteer from './commands/puppeteer';
 import screenshot from './commands/screenshot';
@@ -22,6 +23,7 @@ import stdout from './stdout';
 export interface PupestOptions {
   bail?: boolean;
   height?: number;
+  keep?: boolean;
   speed?: 'fast' | 'medium' | 'slow';
   timeout?: number;
   userAgent?: string;
@@ -85,6 +87,10 @@ export class Pupest {
 
   go(...args: Parameters<typeof go>) {
     return this.enqueue(go, ...args);
+  }
+
+  keep(...args: Parameters<typeof keep>) {
+    return this.enqueue(keep, ...args);
   }
 
   press(...args: Parameters<typeof press>) {
@@ -206,33 +212,47 @@ export class Pupest {
     if (error) {
       if (options.verbose) {
         stdout.error(`at command ${successCount + 1}: ${error.command ?? 'unknown'}`, 'FAILED');
+        stdout.error(error.message, 'MESSAGE');
       } else {
-        process.stdout.cursorTo(0);
-        process.stdout.clearLine(0);
-        stdout.error(stdout.clipText(name), 'FAILED');
+        this.browser.on('disconnected', () => {
+          process.stdout.cursorTo(0);
+          process.stdout.clearLine(0);
+          stdout.error(stdout.clipText(name), 'FAILED');
+          stdout.error(error.message, 'MESSAGE');
+        });
       }
-
-      stdout.error(error.message, 'MESSAGE');
     } else {
       if (options.verbose) {
         stdout.success(`${successCount} command(s) in ${perfSeconds}s`, 'SUCCESS');
       } else {
-        process.stdout.cursorTo(0);
-        process.stdout.clearLine(0);
-        stdout.success(stdout.clipText(name), 'SUCCESS');
+        this.browser.on('disconnected', () => {
+          process.stdout.cursorTo(0);
+          process.stdout.clearLine(0);
+          stdout.success(stdout.clipText(name), 'SUCCESS');
+        });
       }
     }
 
-    if (options.verbose) {
-      process.stdout.write(`\n`);
+    if (this.options.keep) {
+      process.stdout.cursorTo(0);
+      process.stdout.clearLine(0);
+      stdout.warn(options.verbose ? 'waiting for manual browser close' : stdout.clipText(name), 'KEEP', '');
     }
 
-    if (this.browser) {
+    this.browser.on('disconnected', () => {
+      if (options.verbose) {
+        process.stdout.cursorTo(0);
+        process.stdout.clearLine(0);
+        process.stdout.write(`\n`);
+      }
+
+      if (error && options.bail) {
+        throw new Error('Test failed.');
+      }
+    });
+
+    if (this.browser && !this.options.keep) {
       await this.browser.close().catch(() => null);
-    }
-
-    if (error && options.bail) {
-      throw new Error('Test failed.');
     }
 
     return !error;

@@ -4,6 +4,7 @@ const args = yargs(process.argv)
   .options({
     bail: { alias: 'b', type: 'boolean' },
     height: { alias: 'h', default: 1080, type: 'number' },
+    keep: { alias: 'k', type: 'boolean' },
     speed: { alias: 's', type: 'string' },
     timeout: { alias: 't', default: 15000, type: 'number' },
     userAgent: { alias: 'u', type: 'string' },
