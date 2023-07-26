@@ -80,6 +80,14 @@ The height of the browser window in pixels. Defaults to `1080`.
 
 ---
 
+### `keep`
+
+**CLI:** `--keep` or `-k`
+
+If set to `true`, keeps the browser open, having to be closed manually
+
+---
+
 ### `speed`
 
 **CLI:** `--speed` or `-s`
