@@ -32,8 +32,16 @@ pupest()
 
 ### CLI
 
+Run for all `*.pupest.js` files
+
 ```shell
 pupest --visible --verbose
+```
+
+Run for custom glob
+
+```shell
+pupest **/auth --visible --verbose
 ```
 
 ## Commands

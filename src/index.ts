@@ -17,6 +17,7 @@ import scroll from './commands/scroll';
 import select from './commands/select';
 import type from './commands/type';
 import wait from './commands/wait';
+import waitAnimationEnd from './commands/waitAnimationEnd';
 import waitResponseURL from './commands/waitResponseURL';
 import stdout from './stdout';
 
@@ -264,6 +265,10 @@ export class Pupest {
 
   wait(...args: Parameters<typeof wait>) {
     return this.enqueue(wait, ...args);
+  }
+
+  waitAnimationEnd(...args: Parameters<typeof waitAnimationEnd>) {
+    return this.enqueue(waitAnimationEnd, ...args);
   }
 
   waitResponseURL(...args: Parameters<typeof waitResponseURL>) {
