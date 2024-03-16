@@ -1,4 +1,4 @@
-import Puppeteer, { Browser, Frame, Page } from 'puppeteer';
+import Puppeteer, { type Browser, type Frame, type Page } from 'puppeteer';
 import UserAgent from 'user-agents';
 
 import args from './args';
@@ -33,6 +33,8 @@ export interface PupestOptions {
   width?: number;
 }
 
+export type PupestJob = (...args: any[]) => Promise<any>;
+
 export class Pupest {
   private browser?: Browser;
 
@@ -42,7 +44,7 @@ export class Pupest {
 
   private readonly path: string;
 
-  private queue: Function[] = [];
+  private queue: PupestJob[] = [];
 
   public scope?: Frame;
 
@@ -51,7 +53,7 @@ export class Pupest {
     this.options = { ...options, ...args };
   }
 
-  private enqueue(fn: Function, ...params: any[]) {
+  private enqueue(fn: PupestJob, ...params: any[]) {
     this.queue.push(fn.bind(this, ...params));
     return this;
   }
@@ -172,7 +174,7 @@ export class Pupest {
         height: options.height,
         width: options.width,
       },
-      headless: options.visible ? false : 'new',
+      headless: !options.visible,
       slowMo: options.speed === 'slow' ? 100 : options.speed === 'medium' ? 50 : undefined,
     });
 
@@ -185,7 +187,9 @@ export class Pupest {
 
     if (options.visible) {
       this.browser.pages().then(([initialPage]) => {
-        initialPage.evaluate((name) => (document.title = name), name);
+        initialPage.evaluate((name) => {
+          document.title = name;
+        }, name);
       });
     }
 
@@ -244,7 +248,7 @@ export class Pupest {
       if (options.verbose) {
         process.stdout.cursorTo(0);
         process.stdout.clearLine(0);
-        process.stdout.write(`\n`);
+        process.stdout.write('\n');
       }
 
       if (error && options.bail) {

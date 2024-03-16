@@ -23,16 +23,16 @@ export const styles = {
 };
 
 const stdout = {
-  info(text: string, label: string = 'INFO', eol: string = `\n`) {
+  info(text: string, label = 'INFO', eol = '\n') {
     process.stdout.write(`${styles.bgBlue} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
-  warn(text: string, label: string = 'WARN', eol: string = `\n`) {
+  warn(text: string, label = 'WARN', eol = '\n') {
     process.stdout.write(`${styles.bgYellow} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
-  success(text: string, label: string = 'SUCCESS', eol: string = `\n`) {
+  success(text: string, label = 'SUCCESS', eol = '\n') {
     process.stdout.write(`${styles.bgGreen} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
-  error(text: string, label: string = 'ERROR', eol: string = `\n`) {
+  error(text: string, label = 'ERROR', eol = '\n') {
     process.stdout.write(`${styles.bgRed} ${label.padEnd(7, ' ')} ${styles.reset} ${text}${eol}`);
   },
 

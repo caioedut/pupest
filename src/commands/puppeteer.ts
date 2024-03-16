@@ -1,7 +1,8 @@
-import { Browser, Frame, Page } from 'puppeteer';
+import type { Browser, Frame, Page } from 'puppeteer';
+
+import type { Pupest } from '../index';
 
 import FailException from '../exceptions/FailException';
-import { Pupest } from '../index';
 import stdout from '../stdout';
 
 export default async function puppeteer(handler: (params: { browser: Browser; page: Page; scope: Frame }) => any) {

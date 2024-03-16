@@ -1,5 +1,6 @@
+import type { Pupest } from '../index';
+
 import FailException from '../exceptions/FailException';
-import { Pupest } from '../index';
 import stdout from '../stdout';
 
 export default async function contains(text: string, selector?: string) {

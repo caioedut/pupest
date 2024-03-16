@@ -31,21 +31,21 @@
     "pupest": "tsx src/cli.ts"
   },
   "dependencies": {
-    "glob": "^10.3.0",
-    "puppeteer": "^20.8.0",
+    "glob": "^10.3.10",
+    "puppeteer": "^22.5.0",
     "tsx": "^4.7.1",
-    "user-agents": "^1.0.0",
-    "yargs": "^17.7.0"
+    "user-agents": "^1.1.145",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/user-agents": "^1.0.0",
-    "@types/yargs": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.1.0",
-    "@typescript-eslint/parser": "^6.1.0",
-    "eslint": "^8.45.0",
-    "eslint-plugin-perfectionist": "^1.5.0",
-    "pmex": "^0.0.35",
-    "prettier": "^3.0.0",
+    "@types/user-agents": "^1.0.4",
+    "@types/yargs": "^17.0.32",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-perfectionist": "^2.7.0",
+    "pmex": "^1.0.0",
+    "prettier": "^3.2.5",
     "typescript": "^5.4.2"
   }
 }
