@@ -1,6 +1,6 @@
 # Pupest
 
-The easiest test automation using Puppeteer
+The easiest end-to-end test automation using Puppeteer
 
 ## Installation
 
