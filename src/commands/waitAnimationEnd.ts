@@ -23,7 +23,7 @@ export default async function waitAnimationEnd(selector = 'body') {
         const handler = () => {
           if (done) return;
           done = true;
-          setTimeout(() => resolve(true), 0);
+          resolve(true);
         };
 
         $el.addEventListener('animationend', handler, { once: true });
