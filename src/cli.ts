@@ -11,8 +11,10 @@ console.clear();
 const argPattern = args?._?.[2];
 let pattern = argPattern ?? '**/*';
 
-if (!pattern.endsWith('.pupest.js')) {
-  pattern += '.pupest.js';
+const exts = ['js', 'cjs', 'mjs', 'jsx', 'ts', 'tsx'];
+
+if (!exts.some((ext) => pattern.endsWith(`.pupest.${ext}`))) {
+  pattern += `.pupest.{${exts.join(',')}}`;
 }
 
 let files = globSync(pattern, { ignore: 'node_modules/**' }).sort();
