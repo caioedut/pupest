@@ -9,6 +9,7 @@ import file from './commands/file';
 import find from './commands/find';
 import frame from './commands/frame';
 import go from './commands/go';
+import ifElse from './commands/ifElse';
 import keep from './commands/keep';
 import press from './commands/press';
 import puppeteer from './commands/puppeteer';
@@ -90,6 +91,10 @@ export class Pupest {
 
   go(...args: Parameters<typeof go>) {
     return this.enqueue(go, ...args);
+  }
+
+  ifElse(...args: Parameters<typeof ifElse>) {
+    return this.enqueue(ifElse, ...args);
   }
 
   keep(...args: Parameters<typeof keep>) {
@@ -186,7 +191,7 @@ export class Pupest {
     this.scope = await this.page.mainFrame();
 
     if (options.visible) {
-      this.browser.pages().then(([initialPage]) => {
+      await this.browser.pages().then(([initialPage]) => {
         initialPage.evaluate((name) => {
           document.title = name;
         }, name);
