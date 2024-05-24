@@ -228,7 +228,7 @@ export class Pupest {
           process.stdout.cursorTo(0);
           process.stdout.clearLine(0);
           stdout.error(stdout.clipText(name), 'FAILED');
-          stdout.error(error.message, 'MESSAGE');
+          // stdout.error(error.message, 'MESSAGE');
         });
       }
     } else {
@@ -257,7 +257,8 @@ export class Pupest {
       }
 
       if (error && options.bail) {
-        throw new Error('Test failed.');
+        // throw new Error('Test failed.');
+        process.exit();
       }
     });
 

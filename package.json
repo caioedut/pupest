@@ -17,11 +17,23 @@
     "name": "Caio Teixeira",
     "email": "caioedut@gmail.com"
   },
-  "bin": "dist/cli.js",
-  "main": "dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "bin": "./dist/cli.js",
   "files": [
     "dist"
   ],
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
   "scripts": {
     "examples": "tsx scripts/examples.ts",
     "test": "tsx scripts/test.ts",
@@ -34,7 +46,7 @@
     "glob": "^10.3.10",
     "puppeteer": "^22.5.0",
     "tsx": "^4.7.1",
-    "user-agents": "^1.1.145",
+    "user-agents": "^1.1.214",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
@@ -44,7 +56,8 @@
     "@typescript-eslint/parser": "^7.2.0",
     "eslint": "^8.57.0",
     "eslint-plugin-perfectionist": "^2.7.0",
-    "pmex": "^1.0.0",
+    "pkgroll": "^2.1.1",
+    "pmex": "^2.0.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.2"
   }

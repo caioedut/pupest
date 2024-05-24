@@ -1,11 +1,10 @@
-import pmex from 'pmex';
-
-const args = process.argv.slice(2);
+import pmex, { args } from 'pmex';
 
 pmex({
-  npm: `install && npm prune`,
-  pnpm: `install --fix-lockfile`,
-  yarn: `install --check-files`,
+  bun: 'install',
+  npm: 'install && npm prune',
+  pnpm: 'install --fix-lockfile',
+  yarn: 'install --check-files',
 });
 
-pmex(`tsx src/cli.ts ${args.join(' ')}`);
+pmex(`tsx src/cli.ts ${args().$}`);

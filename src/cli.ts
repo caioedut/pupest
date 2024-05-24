@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { execSync } from 'child_process';
 import { globSync } from 'glob';
-import { normalize } from 'path';
+import { execSync } from 'node:child_process';
+import { normalize } from 'node:path';
 
 import args from './args';
 
