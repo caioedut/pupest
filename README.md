@@ -5,13 +5,13 @@ The easiest end-to-end test automation using Puppeteer
 ## Installation
 
 ```shell
-yarn add pupest
-```
-
-OR
-
-```shell
 npm install pupest
+# OR
+yarn add pupest
+# OR
+pnpm add pupest
+# OR
+bun add pupest
 ```
 
 ## Usage
@@ -46,21 +46,35 @@ pupest **/auth --visible --verbose
 
 ## Commands
 
-| Command      | Params                                                    | Description                                                                                                        |
-|--------------|-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| `click`      | `selector: string`                                        | Clicks the element matching the selector.                                                                          |
-| `contains`   | `text: string`, `selector?: string`                       | Checks if the element matching the selector contains the specified text.                                           |
-| `file`       | `selector: string`, `...paths: string[]`                  | Attaches one or more files to the element matching the selector.                                                   |
-| `find`       | `selector: string`                                        | Returns the first element matching the selector.                                                                   |
-| `frame`      | `selector?: string`                                       | Switches to the frame matching the selector (or to the main frame if no selector is provided).                     |
-| `go`         | `url: string`                                             | Navigates to the specified URL.                                                                                    |
-| `puppeteer`  | `handler({ browser: Browser, page: Page, scope: Frame })` | Executes a custom handler function that receives an object with instances of the browser, page, and current frame. |
-| `press`      | `key: KeyInput`                                           | Presses the specified key.                                                                                         |
-| `screenshot` | `path?: string`                                           | Captures a screenshot of the current page and saves it to the specified path (or in the test file directory).      |
-| `scroll`     | `selector: string`                                        | Scrolls the page until the element matching the selector is visible.                                               |
-| `select`     | `selector: string`, `...values: string[]`                 | Selects the specified options on the element matching the selector.                                                |
-| `type`       | `text: string`                                            | Types the specified text.                                                                                          |
-| `wait`       | `milliseconds: number`                                    | Waits for the specified number of milliseconds before continuing.                                                  |
+### Handler Props (Type Reference)
+```
+type HandlerProps = {
+  browser: Browser;
+  page: Page;
+  scope: Frame;
+}
+```
+
+| Command            | Params                                                                | Description                                                                                                        |
+|--------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| `click`            | `selector: string`                                                    | Clicks the element matching the selector.                                                                          |
+| `clickIfExists`    | `selector: string`                                                    | Clicks the element matching the selector only if exists on DOM.                                                    |
+| `contains`         | `text: string`, `selector?: string`                                   | Checks if the element matching the selector contains the specified text.                                           |
+| `file`             | `selector: string`, `...paths: string[]`                              | Attaches one or more files to the element matching the selector.                                                   |
+| `find`             | `selector: string`                                                    | Returns the first element matching the selector.                                                                   |
+| `frame`            | `selector?: string`                                                   | Switches to the frame matching the selector (or to the main frame if no selector is provided).                     |
+| `go`               | `url: string`                                                         | Navigates to the specified URL.                                                                                    |
+| `ifElse`           | `condition(HandlerProps)`, `then(HandlerProps)`, `else(HandlerProps)` | Executes callback "then" or "else" based on boolean returned from "condition".                                     |
+| `keep`             |                                                                       | Keeps the browser open, having to be closed manually.                                                              |
+| `press`            | `key: KeyInput`                                                       | Presses the specified key.                                                                                         |
+| `puppeteer`        | `handler(HandlerProps)`                                               | Executes a custom handler function that receives an object with instances of the browser, page, and current frame. |
+| `screenshot`       | `path?: string`                                                       | Captures a screenshot of the current page and saves it to the specified path (or in the test file directory).      |
+| `scroll`           | `selector: string`                                                    | Scrolls the page until the element matching the selector is visible.                                               |
+| `select`           | `selector: string`, `...values: string[]`                             | Selects the specified options on the element matching the selector.                                                |
+| `type`             | `text: string`                                                        | Types the specified text.                                                                                          |
+| `wait`             | `milliseconds: number`                                                | Waits for the specified number of milliseconds before continuing.                                                  |
+| `waitAnimationEnd` | `selector: string`                                                    | Waits for the animation or transition of the given selector to finish.                                             |
+| `waitResponseURL`  | `url: string`                                                         | Waits for a response from a specified URL before proceeding. `*` may be used at the beginning and end of the URL   |
 
 ## Options
 

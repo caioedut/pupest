@@ -3,7 +3,7 @@ import type { Pupest } from '../index';
 import FailException from '../exceptions/FailException';
 import stdout from '../stdout';
 
-export default async function keep(selector: string) {
+export default async function keep() {
   // @ts-expect-error
   const { options, scope } = this as Pupest;
 
@@ -19,6 +19,6 @@ export default async function keep(selector: string) {
     // @ts-expect-error
     this.options.keep = true;
   } catch (err: any) {
-    throw new FailException(err?.message, 'keep', [selector]);
+    throw new FailException(err?.message, 'keep', []);
   }
 }
