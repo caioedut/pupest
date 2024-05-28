@@ -1,11 +1,6 @@
 import pupest, { Pupest } from '../src';
 
-/**
- * @param {import("pupest").Pupest} pupest
- * @param {string} packageName
- * @returns {import("pupest").Pupest}
- */
-function goToNpm(pupest, packageName) {
+function goToNpm(pupest: Pupest, packageName: string) {
   return pupest.go(`https://www.npmjs.com/package/${packageName}`);
 }
 

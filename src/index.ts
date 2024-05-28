@@ -67,7 +67,7 @@ export class Pupest {
     return this.enqueue(clickIfExists, ...args);
   }
 
-  command(handler: (pupest: Pupest, ...args: any[]) => Pupest, ...args: Parameters<typeof handler>) {
+  command(handler: (pupest: Pupest, ...args: any[]) => Pupest, ...args: any[]) {
     // Add new command must be sync
     handler.bind(this)(this, ...args);
     return this;

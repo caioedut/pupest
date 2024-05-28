@@ -59,6 +59,7 @@ type HandlerProps = {
 |--------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 | `click`            | `selector: string`                                                    | Clicks the element matching the selector.                                                                          |
 | `clickIfExists`    | `selector: string`                                                    | Clicks the element matching the selector only if exists on DOM.                                                    |
+| `command`          | `callback: (pupest: Pupest, ...args: any[]) => Pupest`                | Executes custom command created previously.                                                                        |
 | `contains`         | `text: string`, `selector?: string`                                   | Checks if the element matching the selector contains the specified text.                                           |
 | `file`             | `selector: string`, `...paths: string[]`                              | Attaches one or more files to the element matching the selector.                                                   |
 | `find`             | `selector: string`                                                    | Returns the first element matching the selector.                                                                   |
