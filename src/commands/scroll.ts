@@ -18,9 +18,16 @@ export default async function scroll(selector: string) {
 
     await scope.waitForSelector(selector);
 
-    await scope.evaluate((selector) => {
+    await scope.evaluate(async (selector) => {
       const $el = document.querySelector(selector);
-      $el && $el.scrollIntoView(true);
+
+      if ($el) {
+        $el.scrollIntoView({ behavior: 'instant' });
+
+        await new Promise((resolve) => {
+          document.addEventListener('scrollend', resolve, { once: true });
+        });
+      }
     }, selector);
   } catch (err: any) {
     throw new FailException(err?.message, 'scroll', [selector]);
